@@ -1,4 +1,7 @@
 
+
+
+
 var config = {
     apiKey: "AIzaSyCiPeY5RT-XB40Dl8S2rjytmhdCCzdhcbI",
     authDomain: "train-scheduler-df65b.firebaseapp.com",
@@ -33,7 +36,15 @@ $(".btn").on("click", function () {
         $("#destination").val("");
         $("#frequency").val("");
         $("#train-time").val("");
+
+        database.ref().push({
+            trainName: trainName,
+            destination: destination,
+            firstTrain: firstTrain,
+            frequency: frequency
+        });
     } else {
         alert("One of the forms was entered incorrectly");
     }
 })
+

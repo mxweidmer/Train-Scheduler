@@ -1,7 +1,4 @@
 
-
-
-
 var config = {
     apiKey: "AIzaSyCiPeY5RT-XB40Dl8S2rjytmhdCCzdhcbI",
     authDomain: "train-scheduler-df65b.firebaseapp.com",
@@ -29,7 +26,7 @@ $(".btn").on("click", function () {
     ) {
         trainName = $("#train-name").val().trim();
         destination = $("#destination").val().trim();
-        frequency = $("#frequency").val().trim();
+        frequency = moment($("#frequency").val().trim(), "HH:mm").format("HH:mm");
         firstTrain = $("#train-time").val().trim();
 
         $("#train-name").val("");
@@ -48,3 +45,26 @@ $(".btn").on("click", function () {
     }
 })
 
+database.ref().on("child_added", function (snapshot) {
+
+    var row = $("<tr>");
+
+    var nameData = $("<td>");
+    var tableName = snapshot.val().trainName;
+    nameData.text(tableName);
+
+    var destinationData = $("<td>");
+    var tableDestination = snapshot.val().destination;
+    destinationData.text(tableDestination);
+
+    var frequencyData = $("<td>");
+    var tableFrequency = snapshot.val().frequency;
+    frequencyData.text(tableFrequency);
+
+    row.append(nameData, destinationData, frequencyData);
+
+    $("#table-body").append(row);
+
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+})

@@ -26,8 +26,8 @@ $(".btn").on("click", function () {
     ) {
         trainName = $("#train-name").val().trim();
         destination = $("#destination").val().trim();
-        frequency = moment($("#frequency").val().trim(), "HH:mm").format("HH:mm");
-        firstTrain = $("#train-time").val().trim();
+        firstTrain = moment($("#train-time").val().trim(), "HH:mm").format("HH:mm");
+        frequency = $("#frequency").val().trim();
 
         $("#train-name").val("");
         $("#destination").val("");
@@ -61,7 +61,25 @@ database.ref().on("child_added", function (snapshot) {
     var tableFrequency = snapshot.val().frequency;
     frequencyData.text(tableFrequency);
 
-    row.append(nameData, destinationData, frequencyData);
+    // converts starting time from military to regular
+    var timeRegular = moment(snapshot.val().firstTrain, "hh:mm");
+    // gets the difference between the users current time and the starting time
+    var timeDiff = moment().diff(moment(timeRegular), "minutes");
+    // finds the leftover time in one frequency cycle
+    var timeRemain = timeDiff % tableFrequency;
+    // get time remaining by subtracting leftover time from the frequency
+    var timeTill = tableFrequency - timeRemain;
+
+    var nextArrival = moment().add(timeTill, "minutes");
+    nextArrival = moment(nextArrival).format("hh:mm a");
+
+    var arrivalData = $("<td>");
+    arrivalData.text(nextArrival);
+
+    var awayData = $("<td>");
+    awayData.text(timeTill);
+
+    row.append(nameData, destinationData, frequencyData, arrivalData, awayData);
 
     $("#table-body").append(row);
 

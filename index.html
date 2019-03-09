@@ -17,6 +17,59 @@
 </head>
 
 <body>
+    <div class="jumbotron container bg-dark">
+        <h1 class="display-4 text-center text-light">Train Scheduler</h1>
+        <h2 class="text-center text-light">Something something for all your train needs</h2>
+    </div>
+
+    <div class="container px-0">
+        <div class="card">
+            <h6 class="card-header">Current Train Schedule</h6>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Train Name</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Frequency (min)</th>
+                            <th scope="col">Next Arrival</th>
+                            <th scope="col">Minutes Away</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0 mt-4">
+        <div class="card">
+            <h6 class="card-header">Add Train</h6>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label>Train Name</label>
+                        <input class="form-control" id="train-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <input class="form-control" id="destination">
+                    </div>
+                    <div class="form-group">
+                        <label>First Train Time (HH:mm - military time)</label>
+                        <input class="form-control" id="train-time">
+                    </div>
+                    <div class="form-group">
+                        <label>Frequency (min)</label>
+                        <input class="form-control" id="frequency" type="number">
+                    </div>
+                    <button type="button" class="btn btn-primary bg-primary ">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"

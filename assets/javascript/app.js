@@ -1,4 +1,4 @@
-
+// connecting to firebase and initialising an instance of it
 var config = {
     apiKey: "AIzaSyCiPeY5RT-XB40Dl8S2rjytmhdCCzdhcbI",
     authDomain: "train-scheduler-df65b.firebaseapp.com",
@@ -12,13 +12,18 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
+// declaring starting variables of user input
 var trainName = "";
 var destination = "";
 var firstTrain = "";
 var frequency = 0;
 
+
+// listens for a click on the submit button
 $(".btn").on("click", function () {
 
+    // if there are entries in the fields and the first train time is entered in the correct format
+    // set starting variables to user input and clear input fields
     if (($("#train-name").val().trim() !== "") &&
         ($("#destination").val().trim() !== "") &&
         ($("#frequency").val().trim() !== "") &&
@@ -34,6 +39,7 @@ $(".btn").on("click", function () {
         $("#frequency").val("");
         $("#train-time").val("");
 
+        // push user input to database
         database.ref().push({
             trainName: trainName,
             destination: destination,
@@ -41,14 +47,18 @@ $(".btn").on("click", function () {
             frequency: frequency
         });
     } else {
+        // tells user something is wrong with input
         alert("One of the forms was entered incorrectly");
     }
 })
 
+// runs when a new object is added to the database or on page load
 database.ref().on("child_added", function (snapshot) {
 
+    // creating new for train data
     var row = $("<tr>");
 
+    // setting table data to each respective field
     var nameData = $("<td>");
     var tableName = snapshot.val().trainName;
     nameData.text(tableName);
@@ -70,7 +80,9 @@ database.ref().on("child_added", function (snapshot) {
     // get time remaining by subtracting leftover time from the frequency
     var timeTill = tableFrequency - timeRemain;
 
+    // add time till arrival to current time to get arrival time
     var nextArrival = moment().add(timeTill, "minutes");
+    // format in regular time with am or pm indicator
     nextArrival = moment(nextArrival).format("hh:mm a");
 
     var arrivalData = $("<td>");
@@ -79,10 +91,13 @@ database.ref().on("child_added", function (snapshot) {
     var awayData = $("<td>");
     awayData.text(timeTill);
 
+    // append all the fields to the row, in the correct order to match with headings
     row.append(nameData, destinationData, frequencyData, arrivalData, awayData);
 
+    // append row containing train data to the table body
     $("#table-body").append(row);
 
+    //error handling
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 })
